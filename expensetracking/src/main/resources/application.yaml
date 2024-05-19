@@ -5,4 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=expense_tracking
     username: expense-tracking
     password: admin
+  jpa:
+    generate-ddl: true
+    show-sql: true
 
