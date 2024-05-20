@@ -22,4 +22,14 @@ public class AuthController {
     public ResponseEntity<String> registerUser(final @RequestBody UserAuth userAuth){
         return this.authService.createUser(userAuth);
     }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<String> loginUser(final @RequestBody UserAuth userAuth){
+        return this.authService.loginUser(userAuth);
+    }
+
+    @PostMapping(value = "/token")
+    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth){
+        return this.authService.loginUser(userAuth);
+    }
 }

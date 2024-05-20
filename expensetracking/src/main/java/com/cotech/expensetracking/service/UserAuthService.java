@@ -35,4 +35,16 @@ public class UserAuthService {
         this.userAuthRepository.save(entity);
         return new ResponseEntity<>("Registration Successful!", HttpStatus.CREATED);
     }
+
+    public ResponseEntity<String> loginUser(final UserAuth userAuth){
+        UserAuthEntity entity = this.userAuthRepository.findByEmail(userAuth.getEmail());
+        if(entity == null){
+            return new ResponseEntity<>("User Not Registered", HttpStatus.BAD_REQUEST);
+        }
+        boolean passwordMatch = BCrypt.checkpw(userAuth.getPassword(), entity.getPassword());
+        if(passwordMatch){
+            return new ResponseEntity<>("Login Sucessful", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Incorrect Password", HttpStatus.BAD_REQUEST);
+    }
 }
