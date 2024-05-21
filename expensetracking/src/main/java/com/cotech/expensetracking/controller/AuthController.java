@@ -2,7 +2,6 @@ package com.cotech.expensetracking.controller;
 
 import com.cotech.expensetracking.model.UserAuth;
 import com.cotech.expensetracking.service.UserAuthService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,21 +14,22 @@ public class AuthController {
 
     private final UserAuthService authService;
 
-    public AuthController(final UserAuthService authService){
+    public AuthController(final UserAuthService authService) {
         this.authService = authService;
     }
+
     @PostMapping(value = "/registration")
-    public ResponseEntity<String> registerUser(final @RequestBody UserAuth userAuth){
+    public ResponseEntity<String> registerUser(final @RequestBody UserAuth userAuth) {
         return this.authService.createUser(userAuth);
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<String> loginUser(final @RequestBody UserAuth userAuth){
+    public ResponseEntity<String> loginUser(final @RequestBody UserAuth userAuth) {
         return this.authService.loginUser(userAuth);
     }
 
     @PostMapping(value = "/token")
-    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth){
+    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth) {
         return this.authService.loginUser(userAuth);
     }
 }

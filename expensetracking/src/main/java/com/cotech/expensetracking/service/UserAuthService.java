@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.beans.Encoder;
-
 @Service
 public class UserAuthService {
 
@@ -19,14 +17,16 @@ public class UserAuthService {
     private final ModelMapper modelMapper;
 
     public UserAuthService(final UserAuthRepository userAuthRepository,
-                           final ModelMapper mapper){
+                           final ModelMapper mapper) {
         this.userAuthRepository = userAuthRepository;
         this.modelMapper = mapper;
     }
 
     public ResponseEntity<String> createUser(final UserAuth userAuth) {
-        UserAuthEntity entity = this.userAuthRepository.findByEmail(userAuth.getEmail());
-        if(entity != null){
+        UserAuthEntity entity = this.userAuthRepository
+                .findByEmail(userAuth.getEmail())
+                .orElse(null);
+        if (entity != null) {
             return new ResponseEntity<>("Email Already Exist!", HttpStatus.BAD_REQUEST);
         }
         String hashedPassword = BCrypt.hashpw(userAuth.getPassword(), BCrypt.gensalt(12));
@@ -36,13 +36,15 @@ public class UserAuthService {
         return new ResponseEntity<>("Registration Successful!", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> loginUser(final UserAuth userAuth){
-        UserAuthEntity entity = this.userAuthRepository.findByEmail(userAuth.getEmail());
-        if(entity == null){
+    public ResponseEntity<String> loginUser(final UserAuth userAuth) {
+        UserAuthEntity entity = this.userAuthRepository
+                .findByEmail(userAuth.getEmail())
+                .orElse(null);
+        if (entity == null) {
             return new ResponseEntity<>("User Not Registered", HttpStatus.BAD_REQUEST);
         }
         boolean passwordMatch = BCrypt.checkpw(userAuth.getPassword(), entity.getPassword());
-        if(passwordMatch){
+        if (passwordMatch) {
             return new ResponseEntity<>("Login Sucessful", HttpStatus.OK);
         }
         return new ResponseEntity<>("Incorrect Password", HttpStatus.BAD_REQUEST);

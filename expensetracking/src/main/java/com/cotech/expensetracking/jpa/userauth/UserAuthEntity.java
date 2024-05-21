@@ -21,7 +21,7 @@ public class UserAuthEntity implements UserDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "password")
@@ -33,6 +33,7 @@ public class UserAuthEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.getName()));
