@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(schema = "expense_tracking", name = "user")
+@Table(schema = "helpdesk", name = "user")
 public class UserEntity {
 
     @Id

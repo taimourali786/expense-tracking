@@ -4,8 +4,8 @@ jwt:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=expense_tracking
-    username: expense-tracking
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=helpdesk
+    username: help-desk
     password: admin
   jpa:
     generate-ddl: true

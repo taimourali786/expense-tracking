@@ -11,10 +11,10 @@ Database Setup:
 2. Connect to database
    - psql postgresql://postgres:admin@localhost:5432/postgres 
 3. Run following SQL commands to setup schema and user
-   - CREATE SCHEMA expense_tracking;
-   - CREATE USER "expense-tracking";
-   - ALTER USER "expense-tracking" WITH password 'admin';
-   - GRANT CREATE, USAGE ON SCHEMA expense_tracking to "expense-tracking";
-   - GRANT ALL ON ALL TABLES IN SCHEMA expense_tracking to "expense-tracking";
+   - CREATE SCHEMA helpdesk;
+   - CREATE USER "help-desk";
+   - ALTER USER "help-desk" WITH password 'admin';
+   - GRANT CREATE, USAGE ON SCHEMA helpdesk to "help-desk";
+   - GRANT ALL ON ALL TABLES IN SCHEMA helpdesk to "help-desk";
 
 

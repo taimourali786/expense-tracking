@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(schema = "expense_tracking", name = "user_authorization")
+@Table(schema = "helpdesk", name = "user_authorization")
 public class UserAuthEntity implements UserDetails {
 
     @Id
