@@ -41,7 +41,7 @@ public class JwtService {
 
     public boolean isValidToken(final String token, final UserAuthEntity user) {
         String username = this.getUsernameFromToken(token);
-        return (username == user.getUsername() && !isTokenExpired(token));
+        return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 
     public String generateToken(final UserAuthEntity userAuth) {
