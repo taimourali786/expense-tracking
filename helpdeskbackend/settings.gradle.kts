@@ -1,1 +1,1 @@
-rootProject.name = "expensetracking"
+rootProject.name = "helpdeskbackend"

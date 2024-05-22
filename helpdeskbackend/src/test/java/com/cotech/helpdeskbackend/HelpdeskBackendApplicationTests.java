@@ -1,10 +1,10 @@
-package com.cotech.expensetracking;
+package com.cotech.helpdeskbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ExpensetrackingApplicationTests {
+class HelpdeskBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
