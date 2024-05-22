@@ -1,52 +1,73 @@
 package com.cotech.expensetracking.service;
 
 
+import com.cotech.expensetracking.jpa.user.UserEntity;
+import com.cotech.expensetracking.jpa.user.UserRepository;
+import com.cotech.expensetracking.jpa.userauth.Role;
 import com.cotech.expensetracking.jpa.userauth.UserAuthEntity;
 import com.cotech.expensetracking.jpa.userauth.UserAuthRepository;
-import com.cotech.expensetracking.model.UserAuth;
+import com.cotech.expensetracking.model.User;
+import com.cotech.expensetracking.model.auth.AuthResponse;
+import com.cotech.expensetracking.model.auth.Login;
+import com.cotech.expensetracking.model.auth.Registration;
+import com.cotech.expensetracking.security.service.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserAuthService {
 
     private final UserAuthRepository userAuthRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    public UserAuthService(final UserAuthRepository userAuthRepository,
-                           final ModelMapper mapper) {
-        this.userAuthRepository = userAuthRepository;
-        this.modelMapper = mapper;
-    }
-
-    public ResponseEntity<String> createUser(final UserAuth userAuth) {
+    public ResponseEntity<AuthResponse> createUser(final Registration registration) {
         UserAuthEntity entity = this.userAuthRepository
-                .findByEmail(userAuth.getEmail())
+                .findByEmail(registration.getEmail())
                 .orElse(null);
         if (entity != null) {
-            return new ResponseEntity<>("Email Already Exist!", HttpStatus.BAD_REQUEST);
+            String token = this.jwtService.generateToken(entity);
+            return new ResponseEntity<>(new AuthResponse(token), HttpStatus.BAD_REQUEST);
         }
-        String hashedPassword = BCrypt.hashpw(userAuth.getPassword(), BCrypt.gensalt(12));
-        userAuth.setPassword(hashedPassword);
-        entity = this.modelMapper.map(userAuth, UserAuthEntity.class);
-        this.userAuthRepository.save(entity);
-        return new ResponseEntity<>("Registration Successful!", HttpStatus.CREATED);
+        User user = User.builder()
+                .firstName(registration.getFirstName())
+                .lastName(registration.getLastName())
+                .address(registration.getAddress())
+                .age(registration.getAge())
+                .build();
+        UserEntity userEntity = this.modelMapper.map(user, UserEntity.class);
+        this.userRepository.save(userEntity);
+        UserAuthEntity authEntity = UserAuthEntity
+                .builder()
+                .email(registration.getEmail())
+                .password(this.passwordEncoder.encode(registration.getPassword()))
+                .role(Role.USER)
+                .user(userEntity)
+                .build();
+        this.userAuthRepository.save(authEntity);
+        String token = this.jwtService.generateToken(authEntity);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> loginUser(final UserAuth userAuth) {
+    public ResponseEntity<AuthResponse> loginUser(final Login login) {
+        this.authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(login.getEmail(),
+                        login.getPassword()));
+
         UserAuthEntity entity = this.userAuthRepository
-                .findByEmail(userAuth.getEmail())
+                .findByEmail(login.getEmail())
                 .orElse(null);
-        if (entity == null) {
-            return new ResponseEntity<>("User Not Registered", HttpStatus.BAD_REQUEST);
-        }
-        boolean passwordMatch = BCrypt.checkpw(userAuth.getPassword(), entity.getPassword());
-        if (passwordMatch) {
-            return new ResponseEntity<>("Login Sucessful", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Incorrect Password", HttpStatus.BAD_REQUEST);
+        String token = this.jwtService.generateToken(entity);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.CREATED);
     }
 }

@@ -1,7 +1,15 @@
 package com.cotech.expensetracking.jpa.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(schema = "expense_tracking", name = "user")
 public class UserEntity {

@@ -1,6 +1,8 @@
 package com.cotech.expensetracking.controller;
 
-import com.cotech.expensetracking.model.UserAuth;
+import com.cotech.expensetracking.model.auth.AuthResponse;
+import com.cotech.expensetracking.model.auth.Login;
+import com.cotech.expensetracking.model.auth.Registration;
 import com.cotech.expensetracking.service.UserAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/v1/")
+@RequestMapping(value = "/v1/auth")
 public class AuthController {
 
     private final UserAuthService authService;
@@ -18,18 +20,18 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping(value = "/registration")
-    public ResponseEntity<String> registerUser(final @RequestBody UserAuth userAuth) {
-        return this.authService.createUser(userAuth);
+    @PostMapping(value = "/register")
+    public ResponseEntity<AuthResponse> registerUser(final @RequestBody Registration registration) {
+        return this.authService.createUser(registration);
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<String> loginUser(final @RequestBody UserAuth userAuth) {
-        return this.authService.loginUser(userAuth);
+    public ResponseEntity<AuthResponse> loginUser(final @RequestBody Login login) {
+        return this.authService.loginUser(login);
     }
 
-    @PostMapping(value = "/token")
-    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth) {
-        return this.authService.loginUser(userAuth);
-    }
+//    @PostMapping(value = "/token")
+//    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth) {
+//        return this.authService.loginUser(userAuth);
+//    }
 }
