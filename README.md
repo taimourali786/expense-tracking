@@ -1,5 +1,5 @@
-# EXPENSE TRACKING BACKEND
-Backend for expense tracking app
+# HELPDESK BACKEND
+Backend for helpdesk
 
 Requirements:
 1. Docker
