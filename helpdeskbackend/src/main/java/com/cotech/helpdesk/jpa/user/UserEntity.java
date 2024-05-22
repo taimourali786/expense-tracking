@@ -1,4 +1,4 @@
-package com.cotech.expensetracking.jpa.user;
+package com.cotech.helpdesk.jpa.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

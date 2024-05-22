@@ -1,4 +1,4 @@
-package com.cotech.expensetracking.jpa.user;
+package com.cotech.helpdesk.jpa.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

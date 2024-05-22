@@ -1,4 +1,4 @@
-package com.cotech.expensetracking.jpa.userauth;
+package com.cotech.helpdesk.jpa.userauth;
 
 import lombok.Getter;
 

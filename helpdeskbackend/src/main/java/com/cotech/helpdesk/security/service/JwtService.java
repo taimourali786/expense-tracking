@@ -1,6 +1,6 @@
-package com.cotech.expensetracking.security.service;
+package com.cotech.helpdesk.security.service;
 
-import com.cotech.expensetracking.jpa.userauth.UserAuthEntity;
+import com.cotech.helpdesk.jpa.userauth.UserAuthEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

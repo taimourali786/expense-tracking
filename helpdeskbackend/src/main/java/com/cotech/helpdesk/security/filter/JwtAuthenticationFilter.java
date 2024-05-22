@@ -1,8 +1,8 @@
-package com.cotech.expensetracking.security.filter;
+package com.cotech.helpdesk.security.filter;
 
-import com.cotech.expensetracking.jpa.userauth.UserAuthEntity;
-import com.cotech.expensetracking.jpa.userauth.UserAuthRepository;
-import com.cotech.expensetracking.security.service.JwtService;
+import com.cotech.helpdesk.jpa.userauth.UserAuthEntity;
+import com.cotech.helpdesk.jpa.userauth.UserAuthRepository;
+import com.cotech.helpdesk.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

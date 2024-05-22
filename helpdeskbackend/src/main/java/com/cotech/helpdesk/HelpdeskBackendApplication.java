@@ -1,13 +1,13 @@
-package com.cotech.expensetracking;
+package com.cotech.helpdesk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ExpensetrackingApplication {
+public class HelpdeskBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ExpensetrackingApplication.class, args);
+        SpringApplication.run(HelpdeskBackendApplication.class, args);
     }
 
 }

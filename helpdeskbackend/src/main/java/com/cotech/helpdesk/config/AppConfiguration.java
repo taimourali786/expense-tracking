@@ -1,6 +1,6 @@
-package com.cotech.expensetracking.config;
+package com.cotech.helpdesk.config;
 
-import com.cotech.expensetracking.jpa.userauth.UserAuthRepository;
+import com.cotech.helpdesk.jpa.userauth.UserAuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

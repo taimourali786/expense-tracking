@@ -1,4 +1,4 @@
-package com.cotech.expensetracking.model;
+package com.cotech.helpdesk.model;
 
 import lombok.Builder;
 import lombok.Data;

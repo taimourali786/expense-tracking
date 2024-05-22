@@ -1,7 +1,7 @@
-package com.cotech.expensetracking.jpa.userauth;
+package com.cotech.helpdesk.jpa.userauth;
 
 
-import com.cotech.expensetracking.jpa.user.UserEntity;
+import com.cotech.helpdesk.jpa.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
