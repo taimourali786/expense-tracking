@@ -1,10 +1,9 @@
-package com.cotech.helpdeskbackend;
+package com.cotech.helpdesk;
 
-import com.cotech.helpdesk.HelpdeskBackendApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = HelpdeskBackendApplication.class)
+@SpringBootTest
 class HelpdeskBackendApplicationTests {
 
 	@Test

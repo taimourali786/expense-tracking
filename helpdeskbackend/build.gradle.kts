@@ -41,4 +41,5 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	systemProperty("SPRING.PROFILES.ACTIVE", "test")
 }
