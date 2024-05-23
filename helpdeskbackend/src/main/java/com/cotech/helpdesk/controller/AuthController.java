@@ -1,5 +1,6 @@
 package com.cotech.helpdesk.controller;
 
+import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.model.auth.AuthResponse;
 import com.cotech.helpdesk.model.auth.Login;
 import com.cotech.helpdesk.model.auth.Registration;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/v1/auth")
+@RequestMapping(value = UrlPrefix.AUTH)
 public class AuthController {
 
     private final UserAuthService authService;
@@ -29,9 +30,4 @@ public class AuthController {
     public ResponseEntity<AuthResponse> loginUser(final @RequestBody Login login) {
         return this.authService.loginUser(login);
     }
-
-//    @PostMapping(value = "/token")
-//    public ResponseEntity<String> getUserJwtToken(final @RequestBody UserAuth userAuth) {
-//        return this.authService.loginUser(userAuth);
-//    }
 }

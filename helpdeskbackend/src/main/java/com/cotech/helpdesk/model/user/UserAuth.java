@@ -1,4 +1,4 @@
-package com.cotech.helpdesk.model;
+package com.cotech.helpdesk.model.user;
 
 import com.cotech.helpdesk.jpa.userauth.Role;
 import lombok.AllArgsConstructor;

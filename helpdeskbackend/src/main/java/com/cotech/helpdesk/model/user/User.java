@@ -1,4 +1,4 @@
-package com.cotech.helpdesk.model;
+package com.cotech.helpdesk.model.user;
 
 import lombok.Builder;
 import lombok.Data;
