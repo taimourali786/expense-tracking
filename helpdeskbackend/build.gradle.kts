@@ -37,6 +37,9 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	runtimeOnly("com.h2database:h2:2.2.224")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+
 }
 
 tasks.withType<Test> {

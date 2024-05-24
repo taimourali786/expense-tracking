@@ -10,4 +10,7 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
-
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
