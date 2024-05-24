@@ -19,7 +19,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @Generated(value = "/all")
-    public List<Department> getDepartments(){
+    public List<Department> getDepartments() {
         return this.departmentService.getDepartments();
     }
 }

@@ -19,6 +19,6 @@ public class PriorityController {
 
     @GetMapping(value = "/all")
     public List<Priority> getPriorities() {
-        return this.priorityService.getAvailablePriorities();
+        return this.priorityService.getPriorities();
     }
 }

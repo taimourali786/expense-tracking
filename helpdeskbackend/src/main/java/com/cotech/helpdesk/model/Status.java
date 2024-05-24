@@ -1,7 +1,6 @@
 package com.cotech.helpdesk.model;
 
 
-import jdk.jfr.DataAmount;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

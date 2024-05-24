@@ -1,7 +1,6 @@
 package com.cotech.helpdesk.jpa.catagory;
 
 import com.cotech.helpdesk.jpa.department.DepartmentEntity;
-import com.cotech.helpdesk.model.Department;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "helpdesk", name="category")
+@Table(schema = "helpdesk", name = "category")
 public class CategoryEntity {
 
     @Id

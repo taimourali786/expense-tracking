@@ -6,12 +6,13 @@ import com.cotech.helpdesk.jpa.user.UserRepository;
 import com.cotech.helpdesk.jpa.userauth.Role;
 import com.cotech.helpdesk.jpa.userauth.UserAuthEntity;
 import com.cotech.helpdesk.jpa.userauth.UserAuthRepository;
-import com.cotech.helpdesk.model.user.User;
 import com.cotech.helpdesk.model.auth.AuthResponse;
 import com.cotech.helpdesk.model.auth.Login;
 import com.cotech.helpdesk.model.auth.Registration;
+import com.cotech.helpdesk.model.user.User;
 import com.cotech.helpdesk.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserAuthService {
 
     private final UserAuthRepository userAuthRepository;
@@ -55,6 +57,7 @@ public class UserAuthService {
                 .user(userEntity)
                 .build();
         this.userAuthRepository.save(authEntity);
+        log.trace("User Registered with email {}", registration.getEmail());
         String token = this.jwtService.generateToken(authEntity);
         return new ResponseEntity<>(new AuthResponse(token), HttpStatus.CREATED);
     }
@@ -67,6 +70,7 @@ public class UserAuthService {
         UserAuthEntity entity = this.userAuthRepository
                 .findByEmail(login.getEmail())
                 .orElse(null);
+        log.trace("User Login with email {}", login.getEmail());
         String token = this.jwtService.generateToken(entity);
         return new ResponseEntity<>(new AuthResponse(token), HttpStatus.CREATED);
     }
