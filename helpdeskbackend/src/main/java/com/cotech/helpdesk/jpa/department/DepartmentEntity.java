@@ -1,5 +1,4 @@
-package com.cotech.helpdesk.jpa.status;
-
+package com.cotech.helpdesk.jpa.department;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,12 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "helpdesk", name = "status")
-public class StatusEntity {
+public class DepartmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
 
     @Column(name = "name", nullable = false)

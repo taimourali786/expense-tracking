@@ -14,16 +14,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PriorityService {
+public class PriorityService extends BaseService{
 
     private final PriorityRepository priorityRepository;
-    private final ModelMapper mapper;
 
     public List<Priority> getAvailablePriorities(){
         List<PriorityEntity> entities = this.priorityRepository.findAll();
+        if(entities.isEmpty()){
+            return new ArrayList<>();
+        }
         List<Priority> priorities = new ArrayList<>();
         for(PriorityEntity entity : entities){
-            priorities.add(this.mapper.map(entity, Priority.class));
+            priorities.add(this.getMapper().map(entity, Priority.class));
         }
         return priorities;
     }

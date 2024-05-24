@@ -12,16 +12,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StatusService {
+public class StatusService extends BaseService{
 
     private final StatusRepository statusRepository;
-    private final ModelMapper mapper;
 
     public List<Status> getAvailableStatuses(){
         List<StatusEntity> entities = this.statusRepository.findAll();
+        if(entities.isEmpty()){
+            return new ArrayList<>();
+        }
         List<Status> statusList = new ArrayList<>();
         for(StatusEntity entity : entities){
-            statusList.add(this.mapper.map(entity, Status.class));
+            statusList.add(this.getMapper().map(entity, Status.class));
         }
         return statusList;
     }
