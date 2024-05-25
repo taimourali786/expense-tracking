@@ -1,5 +1,6 @@
 package com.cotech.helpdesk.jpa.user;
 
+import com.cotech.helpdesk.jpa.department.DepartmentEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +20,9 @@ public class UserEntity {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "address")
@@ -29,4 +30,11 @@ public class UserEntity {
 
     @Column(name = "age")
     private int age;
+
+    @Column(name = "phone_number")
+    private Long phoneNumber;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private DepartmentEntity department;
 }
