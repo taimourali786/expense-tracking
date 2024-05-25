@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +25,19 @@ public class DepartmentService {
     @Getter
     private final ModelMapper mapper;
 
-    public List<Department> getDepartments() {
-        List<DepartmentEntity> entities = this.departmentRepository.findAll();
-        if (entities.isEmpty()) {
-            return new ArrayList<>();
+    public ResponseEntity<List<Department>> getDepartments() {
+        try {
+            List<DepartmentEntity> entities = this.departmentRepository.findAll();
+            List<Department> departments = new ArrayList<>();
+            for (DepartmentEntity departmentEntity : entities) {
+                departments.add(this.getMapper().map(departmentEntity, Department.class));
+            }
+            log.trace("Returning departments");
+            return ResponseEntity.ok(departments);
+        } catch (Exception ex){
+            log.error("Failed to get departments: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        List<Department> departments = new ArrayList<>();
-        for (DepartmentEntity departmentEntity : entities) {
-            departments.add(this.getMapper().map(departmentEntity, Department.class));
-        }
-        log.trace("Returning departments");
-        return departments;
+
     }
 }

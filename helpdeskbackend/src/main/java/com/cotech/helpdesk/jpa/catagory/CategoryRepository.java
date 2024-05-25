@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
 
-    @Query("SELECT cat FROM CategoryEntity cat "
-            + "WHERE cat.parentCategory = :parent_id")
-    List<CategoryEntity> findCategoryEntitiesByParentCategory(@Param("parent_id") int parentCategoryId);
+    @Query("SELECT cat FROM CategoryEntity cat WHERE cat.parentCategory.id = :parent_id")
+    List<CategoryEntity> findSubCategories(@Param("parent_id") Long parentCategoryId);
+
 
 }

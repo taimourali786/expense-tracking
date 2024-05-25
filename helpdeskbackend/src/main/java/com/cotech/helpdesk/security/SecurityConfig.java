@@ -1,6 +1,7 @@
 package com.cotech.helpdesk.security;
 
 import com.cotech.helpdesk.security.filter.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,21 +30,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //Enable cors when working on frontend to only allow request from localhost via frontend
+        // or postman
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizationManager ->
+                        authorizationManager
+                                .requestMatchers("/v1/auth/**").permitAll()
+                                .requestMatchers("/swagger/**").permitAll()
+                                .anyRequest().authenticated())
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint((request, response, authException) ->
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .sessionManagement(
                         httpSecuritySessionManagementConfigurer ->
                                 httpSecuritySessionManagementConfigurer
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizationManager ->
-                        authorizationManager
-                                .requestMatchers("/v1/auth/**").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll()
-                                .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractHttpConfigurer::disable);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
@@ -56,7 +61,7 @@ public class SecurityConfig {
 
     @Bean
     protected AuthenticationProvider authenticationProvider() {
-        // Responsible fot getting user information
+        // Responsible fot getting user information from database
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(this.userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());

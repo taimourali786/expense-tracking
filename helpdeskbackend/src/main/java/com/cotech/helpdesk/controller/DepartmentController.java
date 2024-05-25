@@ -5,6 +5,7 @@ import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.model.Department;
 import com.cotech.helpdesk.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @Generated(value = "/all")
-    public List<Department> getDepartments() {
+    public ResponseEntity<List<Department>> getDepartments() {
         return this.departmentService.getDepartments();
     }
 }

@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +24,19 @@ public class PriorityService {
     @Getter
     private final ModelMapper mapper;
 
-    public List<Priority> getPriorities() {
-        List<PriorityEntity> entities = this.priorityRepository.findAll();
-        if (entities.isEmpty()) {
-            return new ArrayList<>();
+    public ResponseEntity<List<Priority>> getPriorities() {
+        try {
+            List<PriorityEntity> entities = this.priorityRepository.findAll();
+            List<Priority> priorities = new ArrayList<>();
+            for (PriorityEntity entity : entities) {
+                priorities.add(this.getMapper().map(entity, Priority.class));
+            }
+            log.trace("Returning priorities");
+            return ResponseEntity.ok(priorities);
+        }catch (Exception ex){
+            log.error("Failed to get Priorities:", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        List<Priority> priorities = new ArrayList<>();
-        for (PriorityEntity entity : entities) {
-            priorities.add(this.getMapper().map(entity, Priority.class));
-        }
-        log.trace("Returning priorities");
-        return priorities;
+
     }
 }

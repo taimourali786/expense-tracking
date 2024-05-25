@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +24,32 @@ public class CategoryService {
     @Getter
     private final ModelMapper mapper;
 
-    public List<Category> getCategories() {
-        List<CategoryEntity> entities = this.categoryRepository.findAll();
-        log.trace("Returning list of categories");
-        return this.toCategoryList(entities);
+    public ResponseEntity<List<Category>> getCategories() {
+        try {
+            List<CategoryEntity> entities = this.categoryRepository.findAll();
+            log.trace("Returning list of categories");
+            return ResponseEntity.ok(this.toCategoryList(entities));
+        } catch (Exception ex){
+            log.error("Failed to get categories: ", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
-    public List<Category> getSubCategories(final int parentId) {
-        List<CategoryEntity> entities = this.categoryRepository
-                .findCategoryEntitiesByParentCategory(parentId);
-        log.trace("Returning list of subcategories for category id: {}", parentId);
-        return this.toCategoryList(entities);
+    public ResponseEntity<List<Category>> getSubCategories(final Long parentId) {
+        try {
+            List<CategoryEntity> entities = this.categoryRepository
+                    .findSubCategories(parentId);
+            log.trace("Returning list of subcategories for category id: {}", parentId);
+            return ResponseEntity.ok(this.toCategoryList(entities));
+        } catch (Exception ex){
+            log.error("Failed to get category with parent id {}:", parentId, ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     private List<Category> toCategoryList(final List<CategoryEntity> categoryEntities) {
-        if (categoryEntities.isEmpty()) {
-            return new ArrayList<>();
-        }
         List<Category> categories = new ArrayList<>();
         for (CategoryEntity categoryEntity : categoryEntities) {
             categories.add(this.getMapper().map(categoryEntity, Category.class));

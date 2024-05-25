@@ -4,6 +4,7 @@ import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.model.Category;
 import com.cotech.helpdesk.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping(value = "/all")
-    public List<Category> getCategories(){
+    public ResponseEntity<List<Category>> getCategories(){
         return this.categoryService.getCategories();
     }
 
     @GetMapping(value = "/subcategories/{categoryId}")
-    public List<Category> getSubCategories(final @PathVariable int categoryId){
+    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Long categoryId){
         return this.categoryService.getSubCategories(categoryId);
     }
 }

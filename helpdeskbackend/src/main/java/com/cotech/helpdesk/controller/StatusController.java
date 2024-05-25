@@ -5,6 +5,7 @@ import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.model.Status;
 import com.cotech.helpdesk.service.StatusService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ public class StatusController {
     public final StatusService statusService;
 
     @GetMapping(value = "/all")
-    public List<Status> getStatus() {
+    public ResponseEntity<List<Status>> getStatus() {
         return this.statusService.getStatuses();
     }
 }
