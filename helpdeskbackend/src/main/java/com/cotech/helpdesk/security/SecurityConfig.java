@@ -1,14 +1,13 @@
 package com.cotech.helpdesk.security;
 
+import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.security.filter.JwtAuthenticationFilter;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,19 +35,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManager ->
                         authorizationManager
-                                .requestMatchers("/v1/auth/**").permitAll()
-                                .requestMatchers("/swagger/**").permitAll()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.SWAGGER)).permitAll()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.AUTH)).permitAll()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.CATEGORY)).authenticated()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.DEPARTMENT)).authenticated()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.STATUS)).authenticated()
+                                .requestMatchers(String.format("%s/**", UrlPrefix.PRIORITY)).authenticated()
                                 .anyRequest().authenticated())
-                .exceptionHandling(ex ->
-                        ex.authenticationEntryPoint((request, response, authException) ->
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
                 .sessionManagement(
                         httpSecuritySessionManagementConfigurer ->
                                 httpSecuritySessionManagementConfigurer
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

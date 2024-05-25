@@ -37,7 +37,7 @@ public class OpenApiConfiguration {
     private final String scheme = "bearer";
 
     @Bean
-    public OpenAPI customizeOpenApi(){
+    public OpenAPI customizeOpenApi() {
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement()
                         .addList(schemeName)).components(new Components()

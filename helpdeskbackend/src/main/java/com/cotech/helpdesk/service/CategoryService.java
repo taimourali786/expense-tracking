@@ -29,7 +29,7 @@ public class CategoryService {
             List<CategoryEntity> entities = this.categoryRepository.findAll();
             log.trace("Returning list of categories");
             return ResponseEntity.ok(this.toCategoryList(entities));
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Failed to get categories: ", ex);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -42,7 +42,7 @@ public class CategoryService {
                     .findSubCategories(parentId);
             log.trace("Returning list of subcategories for category id: {}", parentId);
             return ResponseEntity.ok(this.toCategoryList(entities));
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Failed to get category with parent id {}:", parentId, ex);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -20,12 +20,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Category>> getCategories(){
+    public ResponseEntity<List<Category>> getCategories() {
         return this.categoryService.getCategories();
     }
 
     @GetMapping(value = "/subcategories/{categoryId}")
-    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Long categoryId){
+    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Long categoryId) {
         return this.categoryService.getSubCategories(categoryId);
     }
 }

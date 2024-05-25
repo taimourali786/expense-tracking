@@ -20,10 +20,9 @@ import java.util.List;
 @Slf4j
 public class DepartmentService {
 
-    private DepartmentRepository departmentRepository;
-
     @Getter
     private final ModelMapper mapper;
+    private DepartmentRepository departmentRepository;
 
     public ResponseEntity<List<Department>> getDepartments() {
         try {
@@ -34,7 +33,7 @@ public class DepartmentService {
             }
             log.trace("Returning departments");
             return ResponseEntity.ok(departments);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Failed to get departments: ", ex);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
