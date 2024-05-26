@@ -22,7 +22,7 @@ public class DepartmentService {
 
     @Getter
     private final ModelMapper mapper;
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     public ResponseEntity<List<Department>> getDepartments() {
         try {
@@ -35,7 +35,7 @@ public class DepartmentService {
             return ResponseEntity.ok(departments);
         } catch (Exception ex) {
             log.error("Failed to get departments: ", ex);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RuntimeException("Failed to get departments");
         }
 
     }

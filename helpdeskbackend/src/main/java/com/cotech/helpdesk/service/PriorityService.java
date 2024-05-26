@@ -35,7 +35,7 @@ public class PriorityService {
             return ResponseEntity.ok(priorities);
         } catch (Exception ex) {
             log.error("Failed to get Priorities:", ex);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RuntimeException("Failed to get priorities");
         }
 
     }

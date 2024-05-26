@@ -53,8 +53,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userAuth.getUsername())
-                // Subject should have unique identifier of user for which the token is
+                .setSubject(userAuth.getUsername()) // Subject should have unique identifier of user for which the token is
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(this.getSignInKey(), SignatureAlgorithm.HS256)
@@ -67,7 +66,7 @@ public class JwtService {
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token) // throws expired JWT exception on parsing
                 .getBody();
     }
 

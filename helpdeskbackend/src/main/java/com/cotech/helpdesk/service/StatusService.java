@@ -35,8 +35,7 @@ public class StatusService {
             log.trace("Returning statuses");
             return ResponseEntity.ok(statusList);
         } catch (Exception ex) {
-            log.error("Failed to get status: ", ex);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RuntimeException("Failed to get status");
         }
     }
 }

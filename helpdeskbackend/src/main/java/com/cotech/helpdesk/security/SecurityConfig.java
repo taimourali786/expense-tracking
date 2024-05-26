@@ -1,7 +1,9 @@
 package com.cotech.helpdesk.security;
 
 import com.cotech.helpdesk.UrlPrefix;
+import com.cotech.helpdesk.security.filter.FilerChainExcpetionHandler;
 import com.cotech.helpdesk.security.filter.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final FilerChainExcpetionHandler excpetionHandler;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -32,7 +35,7 @@ public class SecurityConfig {
         //Enable cors when working on frontend to only allow request from localhost via frontend
         // or postman
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // Disabled so each request id authenticated
                 .authorizeHttpRequests(authorizationManager ->
                         authorizationManager
                                 .requestMatchers(String.format("%s/**", UrlPrefix.SWAGGER)).permitAll()
@@ -42,12 +45,16 @@ public class SecurityConfig {
                                 .requestMatchers(String.format("%s/**", UrlPrefix.STATUS)).authenticated()
                                 .requestMatchers(String.format("%s/**", UrlPrefix.PRIORITY)).authenticated()
                                 .anyRequest().authenticated())
-                .sessionManagement(
-                        httpSecuritySessionManagementConfigurer ->
-                                httpSecuritySessionManagementConfigurer
-                                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                                        "Unauthorized")))
+                .sessionManagement(sessionConfigurer ->
+                        sessionConfigurer
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(excpetionHandler, JwtAuthenticationFilter.class);
 
         return http.build();
     }
