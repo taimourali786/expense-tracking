@@ -12,8 +12,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
+//https://stackoverflow.com/questions/34595605/how-to-manage-exceptions-thrown-in-filters-in-spring/43242424
 @Component
-public class FilerChainExcpetionHandler extends OncePerRequestFilter {
+public class FilerChainExceptionHandler extends OncePerRequestFilter {
 
     @Autowired
     @Qualifier("handlerExceptionResolver")

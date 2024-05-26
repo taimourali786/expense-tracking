@@ -1,7 +1,7 @@
 package com.cotech.helpdesk.security;
 
 import com.cotech.helpdesk.UrlPrefix;
-import com.cotech.helpdesk.security.filter.FilerChainExcpetionHandler;
+import com.cotech.helpdesk.security.filter.FilerChainExceptionHandler;
 import com.cotech.helpdesk.security.filter.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final FilerChainExcpetionHandler excpetionHandler;
+    private final FilerChainExceptionHandler excpetionHandler;
     private final UserDetailsService userDetailsService;
 
     @Bean
