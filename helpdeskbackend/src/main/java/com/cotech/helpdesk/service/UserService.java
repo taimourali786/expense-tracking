@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserEntity findUserById(final Integer id){
+    public UserEntity findUserById(final Integer id) {
         return this.userRepository.findById(id).orElse(null);
     }
 }

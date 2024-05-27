@@ -27,10 +27,10 @@ public class UserAuthEntity implements UserDetails {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "email" ,nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)

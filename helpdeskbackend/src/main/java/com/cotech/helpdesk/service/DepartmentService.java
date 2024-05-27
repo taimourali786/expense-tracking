@@ -3,7 +3,6 @@ package com.cotech.helpdesk.service;
 import com.cotech.helpdesk.jpa.department.DepartmentEntity;
 import com.cotech.helpdesk.jpa.department.DepartmentRepository;
 import com.cotech.helpdesk.jpa.user.UserEntity;
-import com.cotech.helpdesk.jpa.user.UserRepository;
 import com.cotech.helpdesk.model.Department;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
@@ -34,9 +33,9 @@ public class DepartmentService {
         TypeMap<DepartmentEntity, Department> type =
                 this.mapper.createTypeMap(DepartmentEntity.class, Department.class);
         type.addMapping(src -> src.getLead().getId(), Department::setLeadId);
-        Converter<Integer, UserEntity> userEntityConverter = context ->{
-            Integer leadId =context.getSource();
-            if (leadId != null){
+        Converter<Integer, UserEntity> userEntityConverter = context -> {
+            Integer leadId = context.getSource();
+            if (leadId != null) {
                 return userService.findUserById(context.getSource());
             }
             return null;

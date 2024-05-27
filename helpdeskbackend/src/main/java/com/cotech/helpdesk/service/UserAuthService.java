@@ -1,7 +1,6 @@
 package com.cotech.helpdesk.service;
 
 
-import com.cotech.helpdesk.jpa.user.UserEntity;
 import com.cotech.helpdesk.jpa.user.UserRepository;
 import com.cotech.helpdesk.jpa.userauth.Role;
 import com.cotech.helpdesk.jpa.userauth.UserAuthEntity;
@@ -9,7 +8,6 @@ import com.cotech.helpdesk.jpa.userauth.UserAuthRepository;
 import com.cotech.helpdesk.model.auth.AuthResponse;
 import com.cotech.helpdesk.model.auth.Login;
 import com.cotech.helpdesk.model.auth.Registration;
-import com.cotech.helpdesk.model.user.User;
 import com.cotech.helpdesk.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
