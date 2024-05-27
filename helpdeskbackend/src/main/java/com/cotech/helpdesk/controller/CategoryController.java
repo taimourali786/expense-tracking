@@ -4,11 +4,9 @@ import com.cotech.helpdesk.UrlPrefix;
 import com.cotech.helpdesk.model.Category;
 import com.cotech.helpdesk.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,8 +22,24 @@ public class CategoryController {
         return this.categoryService.getCategories();
     }
 
+    @PostMapping(value = "/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void insertCategory(final @RequestBody Category category) {
+        this.categoryService.insertCategory(category);
+    }
+
+    @PutMapping(value = "update")
+    public void updateCategory(final @RequestBody Category category) {
+        this.categoryService.updateCategory(category);
+    }
+
+    @DeleteMapping(value = "/delete/{categoryId}")
+    public void delete(final @PathVariable Integer categoryId) {
+        this.categoryService.deleteCategory(categoryId);
+    }
+
     @GetMapping(value = "/subcategories/{categoryId}")
-    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Long categoryId) {
+    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Integer categoryId) {
         return this.categoryService.getSubCategories(categoryId);
     }
 }

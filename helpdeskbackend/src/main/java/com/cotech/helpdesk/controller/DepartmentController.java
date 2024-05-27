@@ -6,9 +6,7 @@ import com.cotech.helpdesk.model.Department;
 import com.cotech.helpdesk.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,20 @@ public class DepartmentController {
     @GetMapping(value = "/all")
     public ResponseEntity<List<Department>> getDepartments() {
         return this.departmentService.getDepartments();
+    }
+
+    @PostMapping(value = "/create")
+    public void insertDepartment(final @RequestBody Department department) {
+        this.departmentService.createDepartment(department);
+    }
+
+    @PutMapping(value = "/update")
+    public void updateDepartment(final @RequestBody Department department) {
+        this.departmentService.updateDepartment(department);
+    }
+
+    @DeleteMapping(value = "/delete/{departmentId}")
+    public void deleteDepartment(final @PathVariable Integer departmentId) {
+        this.departmentService.deleteDepartment(departmentId);
     }
 }

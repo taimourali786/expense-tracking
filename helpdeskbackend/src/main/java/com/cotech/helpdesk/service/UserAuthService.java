@@ -41,20 +41,11 @@ public class UserAuthService {
             String token = this.jwtService.generateToken(entity);
             return new ResponseEntity<>(new AuthResponse(token), HttpStatus.BAD_REQUEST);
         }
-        User user = User.builder()
-                .firstName(registration.getFirstName())
-                .lastName(registration.getLastName())
-                .address(registration.getAddress())
-                .age(registration.getAge())
-                .build();
-        UserEntity userEntity = this.modelMapper.map(user, UserEntity.class);
-        this.userRepository.save(userEntity);
         UserAuthEntity authEntity = UserAuthEntity
                 .builder()
                 .email(registration.getEmail())
                 .password(this.passwordEncoder.encode(registration.getPassword()))
                 .role(Role.USER)
-                .user(userEntity)
                 .build();
         this.userAuthRepository.save(authEntity);
         log.trace("User Registered with email {}", registration.getEmail());
