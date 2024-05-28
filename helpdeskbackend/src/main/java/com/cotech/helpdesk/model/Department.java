@@ -10,7 +10,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Department {
-
+    private Integer id;
     @NonNull
     private String name;
     private Integer leadId;

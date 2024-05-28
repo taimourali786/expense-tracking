@@ -38,8 +38,8 @@ public class CategoryController {
         this.categoryService.deleteCategory(categoryId);
     }
 
-    @GetMapping(value = "/subcategories/{categoryId}")
-    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Integer categoryId) {
-        return this.categoryService.getSubCategories(categoryId);
+    @GetMapping(value = "/subcategories/{parentCategoryId}")
+    public ResponseEntity<List<Category>> getSubCategories(final @PathVariable Integer parentCategoryId) {
+        return this.categoryService.getSubCategories(parentCategoryId);
     }
 }

@@ -11,6 +11,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserEntity findUserById(final Integer id) {
+        if (id == null) {
+            return null;
+        }
         return this.userRepository.findById(id).orElse(null);
     }
 }

@@ -40,14 +40,14 @@ public class DepartmentService {
             }
             return null;
         };
-        PropertyMap<Department, DepartmentEntity> categoryMap = new PropertyMap<>() {
+        PropertyMap<Department, DepartmentEntity> departmentMap = new PropertyMap<>() {
             protected void configure() {
                 map().setName(source.getName());
                 using(userEntityConverter).map(source.getLeadId()).setLead(null);
             }
         };
 
-        mapper.addMappings(categoryMap);
+        mapper.addMappings(departmentMap);
     }
 
     public ResponseEntity<List<Department>> getDepartments() {
@@ -64,6 +64,13 @@ public class DepartmentService {
             throw new RuntimeException("Failed to get departments");
         }
 
+    }
+
+    public DepartmentEntity getDepartmentById(final Integer depId) {
+        if (depId == null) {
+            return null;
+        }
+        return this.departmentRepository.findById(depId).orElse(null);
     }
 
     public void createDepartment(final Department department) {

@@ -10,6 +10,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class Category {
 
+    private Integer id;
     @NonNull
     private String name;
     private Integer departmentId;

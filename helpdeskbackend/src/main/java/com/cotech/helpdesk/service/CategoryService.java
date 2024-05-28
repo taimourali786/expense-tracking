@@ -2,9 +2,12 @@ package com.cotech.helpdesk.service;
 
 import com.cotech.helpdesk.jpa.catagory.CategoryEntity;
 import com.cotech.helpdesk.jpa.catagory.CategoryRepository;
+import com.cotech.helpdesk.jpa.department.DepartmentEntity;
 import com.cotech.helpdesk.model.Category;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeMap;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,14 +21,41 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper mapper;
+    private final DepartmentService departmentService;
 
     public CategoryService(final CategoryRepository categoryRepository,
+                           final DepartmentService departmentService,
                            final ModelMapper mapper) {
         this.categoryRepository = categoryRepository;
+        this.departmentService = departmentService;
         this.mapper = mapper;
         TypeMap<CategoryEntity, Category> typeMap =
                 this.mapper.createTypeMap(CategoryEntity.class, Category.class);
         typeMap.addMapping(src -> src.getParentCategory().getId(), Category::setParentCategoryId);
+        typeMap.addMapping(src -> src.getDepartment().getId(), Category::setDepartmentId);
+
+        Converter<Integer, CategoryEntity> categoryEntityConverter = c -> {
+            Integer catId = c.getSource();
+            if (catId != null) {
+                return this.categoryRepository.findById(c.getSource()).orElse(null);
+            }
+            return null;
+        };
+        Converter<Integer, DepartmentEntity> departmentEntityConverter = d -> {
+            Integer depId = d.getSource();
+            if (depId != null) {
+                return departmentService.getDepartmentById(depId);
+            }
+            return null;
+        };
+        PropertyMap<Category, CategoryEntity> categoryMap = new PropertyMap<>() {
+            protected void configure() {
+                map().setName(source.getName());
+                using(categoryEntityConverter).map(source.getParentCategoryId()).setParentCategory(null);
+                using(departmentEntityConverter).map(source.getDepartmentId()).setDepartment(null);
+            }
+        };
+        mapper.addMappings(categoryMap);
     }
 
     public ResponseEntity<List<Category>> getCategories() {
@@ -71,7 +101,8 @@ public class CategoryService {
                 log.trace("Category Does not Exists, Cannot be updated");
                 return;
             }
-            entity = this.mapper.map(category, CategoryEntity.class);
+            entity.setDepartment(this.departmentService.getDepartmentById(category.getDepartmentId()));
+            entity.setParentCategory(this.categoryRepository.findById(category.getParentCategoryId()).orElse(null));
             this.categoryRepository.save(entity);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to update category", ex);
