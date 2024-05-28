@@ -11,5 +11,8 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Intege
     @Query("SELECT cat FROM CategoryEntity cat WHERE cat.parentCategory.id = :parent_id")
     List<CategoryEntity> findSubCategories(@Param("parent_id") Integer parentCategoryId);
 
+    @Query("SELECT cat FROM CategoryEntity cat WHERE cat.department.id = :dep_id")
+    List<CategoryEntity> findCategoryByDepartments(@Param("dep_id") Integer depId);
+
     CategoryEntity findByName(String name);
 }

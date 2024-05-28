@@ -80,6 +80,16 @@ public class CategoryService {
 
     }
 
+    public ResponseEntity<List<Category>> getCategoryByDepId(final Integer depId) {
+        try {
+            List<CategoryEntity> entities = this.categoryRepository.findCategoryByDepartments(depId);
+            log.trace("Returning list of categories by department id:{}", depId);
+            return ResponseEntity.ok(this.toCategoryList(entities));
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to get categories for department", ex);
+        }
+    }
+
     public void insertCategory(final Category category) {
         try {
             CategoryEntity entity = this.categoryRepository.findByName(category.getName());
