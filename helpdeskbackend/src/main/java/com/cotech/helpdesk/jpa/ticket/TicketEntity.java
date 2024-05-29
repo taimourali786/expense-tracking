@@ -16,7 +16,7 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ticket {
+public class TicketEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ public class Ticket {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -4,6 +4,8 @@ import com.cotech.helpdesk.jpa.catagory.CategoryEntity;
 import com.cotech.helpdesk.jpa.catagory.CategoryRepository;
 import com.cotech.helpdesk.jpa.department.DepartmentEntity;
 import com.cotech.helpdesk.model.Category;
+import com.cotech.helpdesk.model.ConvertableToEntity;
+import com.cotech.helpdesk.util.ModelMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class CategoryService {
+public class CategoryService implements ConvertableToEntity<Integer, CategoryEntity> {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper mapper;
@@ -34,20 +36,10 @@ public class CategoryService {
         typeMap.addMapping(src -> src.getParentCategory().getId(), Category::setParentCategoryId);
         typeMap.addMapping(src -> src.getDepartment().getId(), Category::setDepartmentId);
 
-        Converter<Integer, CategoryEntity> categoryEntityConverter = c -> {
-            Integer catId = c.getSource();
-            if (catId != null) {
-                return this.categoryRepository.findById(c.getSource()).orElse(null);
-            }
-            return null;
-        };
-        Converter<Integer, DepartmentEntity> departmentEntityConverter = d -> {
-            Integer depId = d.getSource();
-            if (depId != null) {
-                return departmentService.getDepartmentById(depId);
-            }
-            return null;
-        };
+        Converter<Integer, CategoryEntity> categoryEntityConverter =
+                ModelMapperUtil.createConverter(this);
+        Converter<Integer, DepartmentEntity> departmentEntityConverter = ModelMapperUtil
+                .createConverter(departmentService);
         PropertyMap<Category, CategoryEntity> categoryMap = new PropertyMap<>() {
             protected void configure() {
                 map().setName(source.getName());
@@ -111,7 +103,7 @@ public class CategoryService {
                 log.trace("Category Does not Exists, Cannot be updated");
                 return;
             }
-            entity.setDepartment(this.departmentService.getDepartmentById(category.getDepartmentId()));
+            entity.setDepartment(this.departmentService.findEntityById(category.getDepartmentId()));
             entity.setParentCategory(this.categoryRepository.findById(category.getParentCategoryId()).orElse(null));
             this.categoryRepository.save(entity);
         } catch (Exception ex) {
@@ -140,5 +132,13 @@ public class CategoryService {
             categories.add(this.mapper.map(categoryEntity, Category.class));
         }
         return categories;
+    }
+
+    @Override
+    public CategoryEntity findEntityById(final Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return this.categoryRepository.findById(id).orElse(null);
     }
 }

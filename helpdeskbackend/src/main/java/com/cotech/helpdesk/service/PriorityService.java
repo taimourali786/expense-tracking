@@ -2,6 +2,7 @@ package com.cotech.helpdesk.service;
 
 import com.cotech.helpdesk.jpa.priority.PriorityEntity;
 import com.cotech.helpdesk.jpa.priority.PriorityRepository;
+import com.cotech.helpdesk.model.ConvertableToEntity;
 import com.cotech.helpdesk.model.Priority;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PriorityService {
+public class PriorityService implements ConvertableToEntity<Integer, PriorityEntity> {
 
     private final PriorityRepository priorityRepository;
     @Getter
@@ -35,6 +36,13 @@ public class PriorityService {
             log.error("Failed to get Priorities:", ex);
             throw new RuntimeException("Failed to get priorities");
         }
-
+    }
+    
+    @Override
+    public PriorityEntity findEntityById(final Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return this.priorityRepository.findById(id).orElse(null);
     }
 }

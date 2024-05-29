@@ -3,7 +3,9 @@ package com.cotech.helpdesk.service;
 import com.cotech.helpdesk.jpa.department.DepartmentEntity;
 import com.cotech.helpdesk.jpa.department.DepartmentRepository;
 import com.cotech.helpdesk.jpa.user.UserEntity;
+import com.cotech.helpdesk.model.ConvertableToEntity;
 import com.cotech.helpdesk.model.Department;
+import com.cotech.helpdesk.util.ModelMapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class DepartmentService {
+public class DepartmentService implements ConvertableToEntity<Integer, DepartmentEntity> {
 
     private final ModelMapper mapper;
     private final DepartmentRepository departmentRepository;
@@ -33,13 +35,8 @@ public class DepartmentService {
         TypeMap<DepartmentEntity, Department> type =
                 this.mapper.createTypeMap(DepartmentEntity.class, Department.class);
         type.addMapping(src -> src.getLead().getId(), Department::setLeadId);
-        Converter<Integer, UserEntity> userEntityConverter = context -> {
-            Integer leadId = context.getSource();
-            if (leadId != null) {
-                return userService.findUserById(context.getSource());
-            }
-            return null;
-        };
+        Converter<Integer, UserEntity> userEntityConverter =
+                ModelMapperUtil.createConverter(userService);
         PropertyMap<Department, DepartmentEntity> departmentMap = new PropertyMap<>() {
             protected void configure() {
                 map().setName(source.getName());
@@ -66,13 +63,6 @@ public class DepartmentService {
 
     }
 
-    public DepartmentEntity getDepartmentById(final Integer depId) {
-        if (depId == null) {
-            return null;
-        }
-        return this.departmentRepository.findById(depId).orElse(null);
-    }
-
     public void createDepartment(final Department department) {
         try {
             DepartmentEntity entity = this.departmentRepository.findByName(department.getName())
@@ -97,7 +87,7 @@ public class DepartmentService {
                 log.debug("Department does not exists");
                 return;
             }
-            entity.setLead(this.userService.findUserById(department.getLeadId()));
+            entity.setLead(this.userService.findEntityById(department.getLeadId()));
             this.departmentRepository.save(entity);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to insert department", ex);
@@ -116,5 +106,13 @@ public class DepartmentService {
         } catch (Exception ex) {
             throw new RuntimeException("Failed to insert department", ex);
         }
+    }
+
+    @Override
+    public DepartmentEntity findEntityById(final Integer id) {
+        if (id == null) {
+            return null;
+        }
+        return this.departmentRepository.findById(id).orElse(null);
     }
 }
