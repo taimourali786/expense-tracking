@@ -1,8 +1,9 @@
 name: Build using gradle
+
 on:
   push:
     branches:
-      - [main]
+      - main
   pull_request:
     branches:
       - main
