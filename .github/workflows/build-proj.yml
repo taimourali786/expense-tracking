@@ -33,4 +33,4 @@ jobs:
       - name: Gradle Version
         run: gradle --version
       - name: Build with Gradle
-        run: gradle build
+        run: cd ${{ gihub.workspave}}/helpdeskbackend && gradle build
