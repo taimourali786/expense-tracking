@@ -19,6 +19,9 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven{
+        url = uri("https://releases.aspose.com/java/repo/")
+    }
 }
 
 dependencies {
@@ -38,6 +41,10 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     runtimeOnly("com.h2database:h2:2.2.224")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+    implementation("org.apache.pdfbox:pdfbox:3.0.3")
+    implementation("com.aspose:aspose-pdf:24.9")
+
 }
 
 tasks.withType<Test> {

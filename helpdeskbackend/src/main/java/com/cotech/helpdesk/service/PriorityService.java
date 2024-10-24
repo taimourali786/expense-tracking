@@ -37,7 +37,7 @@ public class PriorityService implements ConvertableToEntity<Integer, PriorityEnt
             throw new RuntimeException("Failed to get priorities");
         }
     }
-    
+
     @Override
     public PriorityEntity findEntityById(final Integer id) {
         if (id == null) {

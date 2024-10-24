@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements ConvertableToEntity<Integer, UserEntity> {
     private final UserRepository userRepository;
-    
+
     @Override
     public UserEntity findEntityById(Integer id) {
         if (id == null) {
